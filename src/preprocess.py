@@ -484,6 +484,656 @@ if __name__ == "__main__":
     print("F1 Score :", cv_results_B_svm["test_f1"].mean())
     print("ROC-AUC  :", cv_results_B_svm["test_roc_auc"].mean())
 
+
+    # ============================================================
+    # LOGISTIC REGRESSION HYPERPARAMETER TUNING - MODEL A
+    # ============================================================
+
+    lr_param_grid_A = {
+        "model__C": [0.01, 0.1, 1, 10, 100],
+        "model__penalty": ["l1", "l2"],
+        "model__solver": ["liblinear"]
+    }
+
+    lr_grid_search_A = GridSearchCV(
+        estimator=model_A_pipeline,
+        param_grid=lr_param_grid_A,
+        cv=cv,
+        scoring="roc_auc",
+        n_jobs=-1
+    )
+
+    lr_grid_search_A.fit(X_train_A, y_train)
+
+    print("\n==============================")
+    print("TUNED LOGISTIC REGRESSION - MODEL A")
+    print("==============================")
+
+    print("Best LR Parameters:")
+    print(lr_grid_search_A.best_params_)
+
+    print("Best CV ROC-AUC:")
+    print(lr_grid_search_A.best_score_)
+
+
+
+    # ============================================================
+    # EVALUATE TUNED LOGISTIC REGRESSION - MODEL A
+    # ============================================================
+
+    best_lr_model_A = lr_grid_search_A.best_estimator_
+
+    y_pred_lr_A = best_lr_model_A.predict(X_test_A)
+    y_prob_lr_A = best_lr_model_A.predict_proba(X_test_A)[:, 1]
+
+    print("\n--- Tuned Logistic Regression Model A Test Results ---")
+
+    print("Accuracy:",
+        accuracy_score(y_test, y_pred_lr_A))
+
+    print("Precision:",
+        precision_score(y_test, y_pred_lr_A))
+
+    print("Recall:",
+        recall_score(y_test, y_pred_lr_A))
+
+    print("F1:",
+        f1_score(y_test, y_pred_lr_A))
+
+    print("ROC-AUC:",
+        roc_auc_score(y_test, y_prob_lr_A))
+
+    print("Confusion Matrix:")
+    print(confusion_matrix(y_test, y_pred_lr_A))
+
+
+    # ============================================================
+    # LOGISTIC REGRESSION HYPERPARAMETER TUNING - MODEL B
+    # ============================================================
+
+    lr_param_grid_B = {
+        "model__C": [0.01, 0.1, 1, 10, 100],
+        "model__penalty": ["l1", "l2"],
+        "model__solver": ["liblinear"]
+    }
+
+    lr_grid_search_B = GridSearchCV(
+        estimator=model_B_pipeline,
+        param_grid=lr_param_grid_B,
+        cv=cv,
+        scoring="roc_auc",
+        n_jobs=-1
+    )
+
+    lr_grid_search_B.fit(X_train_B, y_train)
+
+    print("\n==============================")
+    print("TUNED LOGISTIC REGRESSION - MODEL B")
+    print("==============================")
+
+    print("Best LR Parameters:")
+    print(lr_grid_search_B.best_params_)
+
+    print("Best CV ROC-AUC:")
+    print(lr_grid_search_B.best_score_)
+
+
+
+    # ============================================================
+    # EVALUATE TUNED LOGISTIC REGRESSION - MODEL B
+    # ============================================================
+
+    best_lr_model_B = lr_grid_search_B.best_estimator_
+
+    y_pred_lr_B = best_lr_model_B.predict(X_test_B)
+    y_prob_lr_B = best_lr_model_B.predict_proba(X_test_B)[:, 1]
+
+    print("\n--- Tuned Logistic Regression Model B Test Results ---")
+
+    print("Accuracy:",
+        accuracy_score(y_test, y_pred_lr_B))
+
+    print("Precision:",
+        precision_score(y_test, y_pred_lr_B))
+
+    print("Recall:",
+        recall_score(y_test, y_pred_lr_B))
+
+    print("F1:",
+        f1_score(y_test, y_pred_lr_B))
+
+    print("ROC-AUC:",
+        roc_auc_score(y_test, y_prob_lr_B))
+
+    print("Confusion Matrix:")
+    print(confusion_matrix(y_test, y_pred_lr_B))
+
+
+    # ============================================================
+    # SVM HYPERPARAMETER TUNING - MODEL A
+    # ============================================================
+
+    svm_param_grid_A = {
+        "model__C": [0.1, 1, 10, 100],
+        "model__gamma": ["scale", "auto"],
+        "model__kernel": ["rbf", "linear"]
+    }
+
+    svm_grid_search_A = GridSearchCV(
+        estimator=model_A_svm_pipeline,
+        param_grid=svm_param_grid_A,
+        cv=cv,
+        scoring="roc_auc",
+        n_jobs=-1
+    )
+
+    svm_grid_search_A.fit(X_train_A, y_train)
+
+    print("\n==============================")
+    print("TUNED SVM - MODEL A")
+    print("==============================")
+
+    print("Best SVM Parameters:")
+    print(svm_grid_search_A.best_params_)
+
+    print("Best CV ROC-AUC:")
+    print(svm_grid_search_A.best_score_)
+
+
+    # ============================================================
+    # EVALUATE TUNED SVM - MODEL A
+    # ============================================================
+
+    best_svm_model_A = svm_grid_search_A.best_estimator_
+
+    y_pred_svm_A = best_svm_model_A.predict(X_test_A)
+    y_prob_svm_A = best_svm_model_A.predict_proba(X_test_A)[:, 1]
+
+    print("\n--- Tuned SVM Model A Test Results ---")
+
+    print("Accuracy:", accuracy_score(y_test, y_pred_svm_A))
+    print("Precision:", precision_score(y_test, y_pred_svm_A))
+    print("Recall:", recall_score(y_test, y_pred_svm_A))
+    print("F1:", f1_score(y_test, y_pred_svm_A))
+    print("ROC-AUC:", roc_auc_score(y_test, y_prob_svm_A))
+
+    print("Confusion Matrix:")
+    print(confusion_matrix(y_test, y_pred_svm_A))
+
+
+
+
+    # ============================================================
+    # THRESHOLD ANALYSIS - MODEL A TUNED SVM
+    # ============================================================
+
+    from sklearn.model_selection import cross_val_predict
+
+    oof_prob_svm_A = cross_val_predict(
+        best_svm_model_A,
+        X_train_A,
+        y_train,
+        cv=cv,
+        method="predict_proba",
+        n_jobs=-1
+    )[:, 1]
+
+
+    thresholds = np.arange(0.30, 0.61, 0.05)
+
+    threshold_results = []
+
+    for threshold in thresholds:
+
+        y_pred_threshold = (
+            oof_prob_svm_A >= threshold
+        ).astype(int)
+
+        tn, fp, fn, tp = confusion_matrix(
+            y_train,
+            y_pred_threshold
+        ).ravel()
+
+        accuracy = accuracy_score(
+            y_train,
+            y_pred_threshold
+        )
+
+        precision = precision_score(
+            y_train,
+            y_pred_threshold,
+            zero_division=0
+        )
+
+        recall = recall_score(
+            y_train,
+            y_pred_threshold,
+            zero_division=0
+        )
+
+        f1 = f1_score(
+            y_train,
+            y_pred_threshold,
+            zero_division=0
+        )
+
+        specificity = tn / (tn + fp)
+
+        threshold_results.append({
+            "Threshold": threshold,
+            "Accuracy": accuracy,
+            "Precision": precision,
+            "Recall": recall,
+            "F1": f1,
+            "Specificity": specificity,
+            "False Negatives": fn
+        })
+
+
+    threshold_results_df = pd.DataFrame(threshold_results)
+
+    print("\n" + "=" * 70)
+    print("THRESHOLD ANALYSIS - MODEL A TUNED SVM")
+    print("=" * 70)
+
+    print(
+        threshold_results_df.to_string(
+            index=False,
+            float_format=lambda x: f"{x:.4f}"
+        )
+    )
+
+
+    # ============================================================
+    # SELECT THRESHOLD
+    # ============================================================
+
+    minimum_recall = 0.90
+
+    eligible_thresholds = threshold_results_df[
+        threshold_results_df["Recall"] >= minimum_recall
+    ]
+
+    if len(eligible_thresholds) > 0:
+
+        selected_row = eligible_thresholds.loc[
+            eligible_thresholds["F1"].idxmax()
+        ]
+
+        selected_threshold = selected_row["Threshold"]
+
+    else:
+
+        selected_row = threshold_results_df.loc[
+            threshold_results_df["Recall"].idxmax()
+        ]
+
+        selected_threshold = selected_row["Threshold"]
+
+
+    print("\nSelected threshold:")
+    print(f"{selected_threshold:.2f}")
+
+    print("\nSelected threshold performance on OOF training predictions:")
+    print(selected_row.to_string())
+
+
+    # ============================================================
+    # APPLY SELECTED THRESHOLD TO TEST SET
+    # ============================================================
+
+    test_prob_svm_A = best_svm_model_A.predict_proba(
+        X_test_A
+    )[:, 1]
+
+    y_test_threshold = (
+        test_prob_svm_A >= selected_threshold
+    ).astype(int)
+
+
+    # ============================================================
+    # FINAL TEST PERFORMANCE
+    # ============================================================
+
+    test_accuracy = accuracy_score(
+        y_test,
+        y_test_threshold
+    )
+
+    test_precision = precision_score(
+        y_test,
+        y_test_threshold,
+        zero_division=0
+    )
+
+    test_recall = recall_score(
+        y_test,
+        y_test_threshold,
+        zero_division=0
+    )
+
+    test_f1 = f1_score(
+        y_test,
+        y_test_threshold,
+        zero_division=0
+    )
+
+    test_cm = confusion_matrix(
+        y_test,
+        y_test_threshold
+    )
+
+    tn, fp, fn, tp = test_cm.ravel()
+
+    test_specificity = tn / (tn + fp)
+
+    test_roc_auc = roc_auc_score(
+        y_test,
+        test_prob_svm_A
+    )
+
+
+    print("\n" + "=" * 70)
+    print("FINAL TEST PERFORMANCE - SELECTED THRESHOLD")
+    print("=" * 70)
+
+    print(f"Threshold   : {selected_threshold:.2f}")
+    print(f"Accuracy    : {test_accuracy:.4f}")
+    print(f"Precision   : {test_precision:.4f}")
+    print(f"Recall      : {test_recall:.4f}")
+    print(f"F1 Score    : {test_f1:.4f}")
+    print(f"Specificity : {test_specificity:.4f}")
+    print(f"ROC-AUC     : {test_roc_auc:.4f}")
+
+    print("\nConfusion Matrix:")
+    print(test_cm)
+
+    print(f"\nTrue Negatives  : {tn}")
+    print(f"False Positives : {fp}")
+    print(f"False Negatives : {fn}")
+    print(f"True Positives  : {tp}")
+
+
+    # ============================================================
+    # FINAL MODEL COMPARISON - MODEL A
+    # ============================================================
+
+    print("\n" + "=" * 80)
+    print("FINAL MODEL COMPARISON - MODEL A")
+    print("=" * 80)
+
+    final_comparison = pd.DataFrame({
+        "Model": [
+            "Logistic Regression",
+            "Random Forest",
+            "SVM (0.50 threshold)",
+            "SVM (0.30 threshold)"
+        ],
+        "Accuracy": [
+            0.8899,
+            0.9358,
+            0.9083,
+            test_accuracy
+        ],
+        "Precision": [
+            0.8000,
+            0.9677,
+            0.8250,
+            test_precision
+        ],
+        "Recall": [
+            0.8889,
+            0.8333,
+            0.9167,
+            test_recall
+        ],
+        "F1": [
+            0.8421,
+            0.8955,
+            0.8684,
+            test_f1
+        ],
+        "Specificity": [
+            0.8904,
+            0.9863,
+            0.9041,
+            test_specificity
+        ],
+        "ROC-AUC": [
+            0.9551,
+            0.9416,
+            0.9600,
+            test_roc_auc
+        ]
+    })
+
+    print(
+        final_comparison.to_string(
+            index=False,
+            float_format=lambda x: f"{x:.4f}"
+        )
+    )
+
+    # ============================================================
+    # SVM HYPERPARAMETER TUNING - MODEL B
+    # ============================================================
+
+    svm_param_grid_B = {
+        "model__C": [0.1, 1, 10, 100],
+        "model__gamma": ["scale", "auto"],
+        "model__kernel": ["rbf", "linear"]
+    }
+
+    svm_grid_search_B = GridSearchCV(
+        estimator=model_B_svm_pipeline,
+        param_grid=svm_param_grid_B,
+        cv=cv,
+        scoring="roc_auc",
+        n_jobs=-1
+    )
+
+    svm_grid_search_B.fit(X_train_B, y_train)
+
+    print("\n==============================")
+    print("TUNED SVM - MODEL B")
+    print("==============================")
+
+    print("Best SVM Parameters:")
+    print(svm_grid_search_B.best_params_)
+
+    print("Best CV ROC-AUC:")
+    print(svm_grid_search_B.best_score_)
+
+
+    # ============================================================
+    # EVALUATE TUNED SVM - MODEL B
+    # ============================================================
+
+    best_svm_model_B = svm_grid_search_B.best_estimator_
+
+    y_pred_svm_B = best_svm_model_B.predict(X_test_B)
+    y_prob_svm_B = best_svm_model_B.predict_proba(X_test_B)[:, 1]
+
+    print("\n--- Tuned SVM Model B Test Results ---")
+
+    print("Accuracy:", accuracy_score(y_test, y_pred_svm_B))
+    print("Precision:", precision_score(y_test, y_pred_svm_B))
+    print("Recall:", recall_score(y_test, y_pred_svm_B))
+    print("F1:", f1_score(y_test, y_pred_svm_B))
+    print("ROC-AUC:", roc_auc_score(y_test, y_prob_svm_B))
+
+    print("Confusion Matrix:")
+    print(confusion_matrix(y_test, y_pred_svm_B))
+
+
+
+    # ======================================================================
+    # THRESHOLD ANALYSIS - MODEL B TUNED SVM
+    # ======================================================================
+
+    from sklearn.model_selection import cross_val_predict
+    from sklearn.metrics import (
+        accuracy_score,
+        precision_score,
+        recall_score,
+        f1_score,
+        confusion_matrix
+    )
+
+    print("\n" + "=" * 70)
+    print("THRESHOLD ANALYSIS - MODEL B TUNED SVM")
+    print("=" * 70)
+
+    # Generate out-of-fold probabilities using training data only
+    y_prob_oof_B = cross_val_predict(
+        best_svm_model_B,
+        X_train_B,
+        y_train,
+        cv=cv,
+        method="predict_proba"
+    )[:, 1]
+
+    thresholds = [0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60]
+
+    threshold_results_B = []
+
+    for threshold in thresholds:
+
+        y_pred_threshold = (y_prob_oof_B >= threshold).astype(int)
+
+        tn, fp, fn, tp = confusion_matrix(
+            y_train,
+            y_pred_threshold
+        ).ravel()
+
+        accuracy = accuracy_score(y_train, y_pred_threshold)
+        precision = precision_score(y_train, y_pred_threshold, zero_division=0)
+        recall = recall_score(y_train, y_pred_threshold, zero_division=0)
+        f1 = f1_score(y_train, y_pred_threshold, zero_division=0)
+        specificity = tn / (tn + fp)
+
+        threshold_results_B.append({
+            "Threshold": threshold,
+            "Accuracy": accuracy,
+            "Precision": precision,
+            "Recall": recall,
+            "F1": f1,
+            "Specificity": specificity,
+            "False Negatives": fn
+        })
+
+    threshold_df_B = pd.DataFrame(threshold_results_B)
+
+    print(threshold_df_B.to_string(index=False))
+
+    # ---------------------------------------------------------
+    # Select threshold
+    # Minimum required recall = 90%
+    # Among thresholds satisfying this, select highest F1
+    # ---------------------------------------------------------
+
+    minimum_recall = 0.90
+
+    eligible_thresholds_B = threshold_df_B[
+        threshold_df_B["Recall"] >= minimum_recall
+    ]
+
+    if not eligible_thresholds_B.empty:
+
+        selected_row_B = eligible_thresholds_B.loc[
+            eligible_thresholds_B["F1"].idxmax()
+        ]
+
+    else:
+
+        selected_row_B = threshold_df_B.loc[
+            threshold_df_B["Recall"].idxmax()
+        ]
+
+    selected_threshold_B = selected_row_B["Threshold"]
+
+    print("\nSelected threshold:")
+    print(selected_threshold_B)
+
+    print("\nSelected threshold performance on OOF training predictions:")
+
+    for column in [
+        "Threshold",
+        "Accuracy",
+        "Precision",
+        "Recall",
+        "F1",
+        "Specificity",
+        "False Negatives"
+    ]:
+        print(f"{column:<18}: {selected_row_B[column]:.6f}")
+
+
+    # ======================================================================
+    # FINAL TEST PERFORMANCE AT SELECTED THRESHOLD
+    # ======================================================================
+
+    y_prob_svm_B = best_svm_model_B.predict_proba(X_test_B)[:, 1]
+
+    y_pred_svm_B_threshold = (
+        y_prob_svm_B >= selected_threshold_B
+    ).astype(int)
+
+    tn, fp, fn, tp = confusion_matrix(
+        y_test,
+        y_pred_svm_B_threshold
+    ).ravel()
+
+    accuracy_B_threshold = accuracy_score(
+        y_test,
+        y_pred_svm_B_threshold
+    )
+
+    precision_B_threshold = precision_score(
+        y_test,
+        y_pred_svm_B_threshold,
+        zero_division=0
+    )
+
+    recall_B_threshold = recall_score(
+        y_test,
+        y_pred_svm_B_threshold,
+        zero_division=0
+    )
+
+    f1_B_threshold = f1_score(
+        y_test,
+        y_pred_svm_B_threshold,
+        zero_division=0
+    )
+
+    specificity_B_threshold = tn / (tn + fp)
+
+    roc_auc_B = roc_auc_score(
+        y_test,
+        y_prob_svm_B
+    )
+
+    print("\n" + "=" * 70)
+    print("FINAL TEST PERFORMANCE - MODEL B SELECTED THRESHOLD")
+    print("=" * 70)
+
+    print(f"Threshold   : {selected_threshold_B:.2f}")
+    print(f"Accuracy    : {accuracy_B_threshold:.4f}")
+    print(f"Precision   : {precision_B_threshold:.4f}")
+    print(f"Recall      : {recall_B_threshold:.4f}")
+    print(f"F1 Score    : {f1_B_threshold:.4f}")
+    print(f"Specificity : {specificity_B_threshold:.4f}")
+    print(f"ROC-AUC     : {roc_auc_B:.4f}")
+
+    print("\nConfusion Matrix:")
+    print(confusion_matrix(y_test, y_pred_svm_B_threshold))
+
+    print(f"\nTrue Negatives  : {tn}")
+    print(f"False Positives : {fp}")
+    print(f"False Negatives : {fn}")
+    print(f"True Positives  : {tp}")
+
     # =====================================================
     # RANDOM FOREST - GRID SEARCH
     # =====================================================
@@ -561,6 +1211,86 @@ if __name__ == "__main__":
 
     print("\nConfusion Matrix:")
     print(cm_A_rf_tuned)
+
+    # =====================================================
+    # MODEL B - RANDOM FOREST GRID SEARCH
+    # =====================================================
+
+    rf_grid_search_B = GridSearchCV(
+    estimator=model_B_rf_pipeline,
+    param_grid=rf_param_grid,
+    cv=cv,
+    scoring="roc_auc",
+    n_jobs=-1
+    )
+
+    rf_grid_search_B.fit(X_train_B, y_train)
+
+    print("\n--- Model B Random Forest Grid Search ---")
+    print("Best parameters:")
+    print(rf_grid_search_B.best_params_)
+
+    print("\nBest CV ROC-AUC:")
+    print(rf_grid_search_B.best_score_)
+
+
+    # =====================================================
+    # MODEL B - TUNED RANDOM FOREST TEST SET EVALUATION
+    # =====================================================
+
+    best_rf_model_B = rf_grid_search_B.best_estimator_
+
+    # Train best model on complete Model B training set
+    best_rf_model_B.fit(X_train_B, y_train)
+
+    # Predictions
+    y_pred_B_rf_tuned = best_rf_model_B.predict(X_test_B)
+
+    # Prediction probabilities
+    y_prob_B_rf_tuned = best_rf_model_B.predict_proba(X_test_B)[:, 1]
+
+
+    # Evaluation
+    accuracy_B_rf_tuned = accuracy_score(
+    y_test,
+    y_pred_B_rf_tuned
+    )
+
+    precision_B_rf_tuned = precision_score(
+    y_test,
+    y_pred_B_rf_tuned
+    )
+
+    recall_B_rf_tuned = recall_score(
+    y_test,
+    y_pred_B_rf_tuned
+    )
+
+    f1_B_rf_tuned = f1_score(
+    y_test,
+    y_pred_B_rf_tuned
+    )
+
+    roc_auc_B_rf_tuned = roc_auc_score(
+    y_test,
+    y_prob_B_rf_tuned
+    )
+
+    cm_B_rf_tuned = confusion_matrix(
+    y_test,
+    y_pred_B_rf_tuned
+    )
+
+
+    print("\n--- Model B Tuned Random Forest - Test Set ---")
+    print("Accuracy :", accuracy_B_rf_tuned)
+    print("Precision:", precision_B_rf_tuned)
+    print("Recall   :", recall_B_rf_tuned)
+    print("F1 Score :", f1_B_rf_tuned)
+    print("ROC-AUC  :", roc_auc_B_rf_tuned)
+
+    print("\nConfusion Matrix:")
+    print(cm_B_rf_tuned)
 
     # =====================================================
     # RANDOM FOREST FEATURE IMPORTANCE
@@ -901,6 +1631,336 @@ if __name__ == "__main__":
     print("Predictions:", y_pred_A[:10])
     print("Actual     :", y_test.iloc[:10].values)
 
+    # =====================================================
+    # FINAL CROSS-VALIDATION COMPARISON
+    # MEAN ± STANDARD DEVIATION
+    # =====================================================
+
+    print("\n")
+    print("=" * 70)
+    print("FINAL CROSS-VALIDATION COMPARISON")
+    print("MEAN ± STANDARD DEVIATION")
+    print("=" * 70)
+
+
+
+    
+
+
+    # -----------------------------------------------------
+    # 1. MODEL A - LOGISTIC REGRESSION
+    # -----------------------------------------------------
+
+    cv_A_LR = cross_validate(
+    model_A_pipeline,
+    X_train_A,
+    y_train,
+    cv=cv,
+    scoring=[
+        "accuracy",
+        "precision",
+        "recall",
+        "f1",
+        "roc_auc"
+    ]
+    )
+
+    print("\n--- Model A - Logistic Regression ---")
+
+    print(
+    "Accuracy :",
+    f"{cv_A_LR['test_accuracy'].mean():.4f} ± "
+    f"{cv_A_LR['test_accuracy'].std():.4f}"
+    )
+
+    print(
+    "Precision:",
+    f"{cv_A_LR['test_precision'].mean():.4f} ± "
+    f"{cv_A_LR['test_precision'].std():.4f}"
+    )
+
+    print(
+    "Recall   :",
+    f"{cv_A_LR['test_recall'].mean():.4f} ± "
+    f"{cv_A_LR['test_recall'].std():.4f}"
+    )
+
+    print(
+    "F1 Score :",
+    f"{cv_A_LR['test_f1'].mean():.4f} ± "
+    f"{cv_A_LR['test_f1'].std():.4f}"
+    )
+
+    print(
+    "ROC-AUC  :",
+    f"{cv_A_LR['test_roc_auc'].mean():.4f} ± "
+    f"{cv_A_LR['test_roc_auc'].std():.4f}"
+    )
+
+
+    # -----------------------------------------------------
+    # 2. MODEL A - TUNED RANDOM FOREST
+    # -----------------------------------------------------
+
+    cv_A_RF = cross_validate(
+    best_rf_model,
+    X_train_A,
+    y_train,
+    cv=cv,
+    scoring=[
+        "accuracy",
+        "precision",
+        "recall",
+        "f1",
+        "roc_auc"
+    ]
+    )
+
+    print("\n--- Model A - Tuned Random Forest ---")
+
+    print(
+    "Accuracy :",
+    f"{cv_A_RF['test_accuracy'].mean():.4f} ± "
+    f"{cv_A_RF['test_accuracy'].std():.4f}"
+    )
+
+    print(
+    "Precision:",
+    f"{cv_A_RF['test_precision'].mean():.4f} ± "
+    f"{cv_A_RF['test_precision'].std():.4f}"
+    )
+
+    print(
+    "Recall   :",
+    f"{cv_A_RF['test_recall'].mean():.4f} ± "
+    f"{cv_A_RF['test_recall'].std():.4f}"
+    )
+
+    print(
+    "F1 Score :",
+    f"{cv_A_RF['test_f1'].mean():.4f} ± "
+    f"{cv_A_RF['test_f1'].std():.4f}"
+    )
+
+    print(
+    "ROC-AUC  :",
+    f"{cv_A_RF['test_roc_auc'].mean():.4f} ± "
+    f"{cv_A_RF['test_roc_auc'].std():.4f}"
+    )
+
+
+    # -----------------------------------------------------
+    # 3. MODEL A - TUNED SVM
+    # -----------------------------------------------------
+
+    cv_A_SVM = cross_validate(
+        svm_grid_search_A.best_estimator_,
+        X_train_A,
+        y_train,
+        cv=cv,
+        scoring=[
+            "accuracy",
+            "precision",
+            "recall",
+            "f1",
+            "roc_auc"
+        ]
+    )
+
+    print("\n--- Model A - Tuned SVM ---")
+
+    print(
+        "Accuracy :",
+        f"{cv_A_SVM['test_accuracy'].mean():.4f} ± "
+        f"{cv_A_SVM['test_accuracy'].std():.4f}"
+    )
+
+    print(
+        "Precision:",
+        f"{cv_A_SVM['test_precision'].mean():.4f} ± "
+        f"{cv_A_SVM['test_precision'].std():.4f}"
+    )
+
+    print(
+        "Recall   :",
+        f"{cv_A_SVM['test_recall'].mean():.4f} ± "
+        f"{cv_A_SVM['test_recall'].std():.4f}"
+    )
+
+    print(
+        "F1 Score :",
+        f"{cv_A_SVM['test_f1'].mean():.4f} ± "
+        f"{cv_A_SVM['test_f1'].std():.4f}"
+    )
+
+    print(
+        "ROC-AUC  :",
+        f"{cv_A_SVM['test_roc_auc'].mean():.4f} ± "
+        f"{cv_A_SVM['test_roc_auc'].std():.4f}"
+    )
+
+
+    # -----------------------------------------------------
+    # 3. MODEL B - LOGISTIC REGRESSION
+    # -----------------------------------------------------
+
+    cv_B_LR = cross_validate(
+    model_B_pipeline,
+    X_train_B,
+    y_train,
+    cv=cv,
+    scoring=[
+        "accuracy",
+        "precision",
+        "recall",
+        "f1",
+        "roc_auc"
+    ]
+    )
+
+    print("\n--- Model B - Logistic Regression ---")
+
+    print(
+    "Accuracy :",
+    f"{cv_B_LR['test_accuracy'].mean():.4f} ± "
+    f"{cv_B_LR['test_accuracy'].std():.4f}"
+    )
+
+    print(
+    "Precision:",
+    f"{cv_B_LR['test_precision'].mean():.4f} ± "
+    f"{cv_B_LR['test_precision'].std():.4f}"
+    )
+
+    print(
+    "Recall   :",
+    f"{cv_B_LR['test_recall'].mean():.4f} ± "
+    f"{cv_B_LR['test_recall'].std():.4f}"
+    )
+
+    print(
+    "F1 Score :",
+    f"{cv_B_LR['test_f1'].mean():.4f} ± "
+    f"{cv_B_LR['test_f1'].std():.4f}"
+    )
+
+    print(
+    "ROC-AUC  :",
+    f"{cv_B_LR['test_roc_auc'].mean():.4f} ± "
+    f"{cv_B_LR['test_roc_auc'].std():.4f}"
+    )
+
+
+    # -----------------------------------------------------
+    # 4. MODEL B - TUNED RANDOM FOREST
+    # -----------------------------------------------------
+
+    cv_B_RF = cross_validate(
+    best_rf_model_B,
+    X_train_B,
+    y_train,
+    cv=cv,
+    scoring=[
+        "accuracy",
+        "precision",
+        "recall",
+        "f1",
+        "roc_auc"
+    ]
+    )
+
+    print("\n--- Model B - Tuned Random Forest ---")
+
+    print(
+    "Accuracy :",
+    f"{cv_B_RF['test_accuracy'].mean():.4f} ± "
+    f"{cv_B_RF['test_accuracy'].std():.4f}"
+    )
+
+    print(
+    "Precision:",
+    f"{cv_B_RF['test_precision'].mean():.4f} ± "
+    f"{cv_B_RF['test_precision'].std():.4f}"
+    )
+
+    print(
+    "Recall   :",
+    f"{cv_B_RF['test_recall'].mean():.4f} ± "
+    f"{cv_B_RF['test_recall'].std():.4f}"
+    )
+
+    print(
+    "F1 Score :",
+    f"{cv_B_RF['test_f1'].mean():.4f} ± "
+    f"{cv_B_RF['test_f1'].std():.4f}"
+    )
+
+    print(
+    "ROC-AUC  :",
+    f"{cv_B_RF['test_roc_auc'].mean():.4f} ± "
+    f"{cv_B_RF['test_roc_auc'].std():.4f}"
+    )
+
+
+    
+
+    # -----------------------------------------------------
+    # 5. MODEL B - TUNED SVM
+    # -----------------------------------------------------
+
+    cv_B_SVM = cross_validate(
+    svm_grid_search_B.best_estimator_,
+    X_train_B,
+    y_train,
+    cv=cv,
+    scoring=[
+    "accuracy",
+    "precision",
+    "recall",
+    "f1",
+    "roc_auc"
+    ]
+    )
+
+    print("\n--- Model B - Tuned SVM ---")
+
+    print(
+    "Accuracy :",
+    f"{cv_B_SVM['test_accuracy'].mean():.4f} ± "
+    f"{cv_B_SVM['test_accuracy'].std():.4f}"
+    )
+
+    print(
+    "Precision:",
+    f"{cv_B_SVM['test_precision'].mean():.4f} ± "
+    f"{cv_B_SVM['test_precision'].std():.4f}"
+    )
+
+    print(
+    "Recall   :",
+    f"{cv_B_SVM['test_recall'].mean():.4f} ± "
+    f"{cv_B_SVM['test_recall'].std():.4f}"
+    )
+
+    print(
+    "F1 Score :",
+    f"{cv_B_SVM['test_f1'].mean():.4f} ± "
+    f"{cv_B_SVM['test_f1'].std():.4f}"
+    )
+
+    print(
+    "ROC-AUC  :",
+    f"{cv_B_SVM['test_roc_auc'].mean():.4f} ± "
+    f"{cv_B_SVM['test_roc_auc'].std():.4f}"
+    )
+
+
+    print("\n")
+    print("=" * 70)
+    print("END OF FINAL CROSS-VALIDATION COMPARISON")
+    print("=" * 70)
+
+    #########################################################
     print("\n--- Processed Data Check ---")
     print(
         "NaN in training:",

@@ -1,0 +1,41 @@
+{
+  "file": "models\\model_B_lite.joblib",
+  "classifier": "RF",
+  "best_params": {
+    "model__max_depth": 10,
+    "model__min_samples_leaf": 2,
+    "model__min_samples_split": 5,
+    "model__n_estimators": 100
+  },
+  "threshold": 0.25,
+  "threshold_rule_met": true,
+  "features": [
+    "Age (yrs)",
+    "Cycle(R/I)",
+    "Cycle length(days)",
+    "Weight gain(Y/N)",
+    "hair growth(Y/N)",
+    "Skin darkening (Y/N)",
+    "Hair loss(Y/N)",
+    "Pimples(Y/N)",
+    "Fast food (Y/N)",
+    "Reg.Exercise(Y/N)"
+  ],
+  "target": "PCOS (Y/N)",
+  "test_metrics_at_threshold": {
+    "Threshold": 0.25,
+    "Accuracy": 0.7522935779816514,
+    "Precision": 0.5737704918032787,
+    "Recall": 0.9722222222222222,
+    "F1": 0.7216494845360825,
+    "Specificity": 0.6438356164383562,
+    "ROC-AUC": 0.9208523592085236,
+    "PR-AUC": 0.8498600040881432,
+    "MCC": 0.5836448155874566,
+    "TN": 47,
+    "FP": 26,
+    "FN": 1,
+    "TP": 35
+  },
+  "intended_use": "screening aid, NOT a diagnosis"
+}

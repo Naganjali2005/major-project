@@ -1,0 +1,32 @@
+Feature,Mean |SHAP|
+binary__Skin darkening (Y/N),0.07838804721845427
+binary__hair growth(Y/N),0.06298448162013068
+binary__Weight gain(Y/N),0.06269738067831017
+binary__Fast food (Y/N),0.041147907152918765
+numeric__AMH(ng/mL),0.03926990509563855
+numeric__Cycle length(days),0.037407617649970824
+cycle__Cycle(R/I)_2,0.02447543558337848
+cycle__Cycle(R/I)_4,0.023173172745072756
+binary__Pimples(Y/N),0.020271957122820032
+numeric__Age (yrs),0.019068278014525347
+numeric__BMI,0.01249627302830204
+numeric__Hip(inch),0.012039791740981971
+numeric__Waist(inch),0.010049229523906427
+numeric__Weight (Kg),0.0083019766995963
+numeric__Hb(g/dl),0.007924728426088684
+numeric__FSH(mIU/mL),0.0077248777098038466
+numeric__Waist:Hip Ratio,0.006951571405678504
+binary__Hair loss(Y/N),0.0069304457280150375
+numeric__Vit D3 (ng/mL),0.006811309732416752
+numeric__PRL(ng/mL),0.006345937501045985
+numeric__FSH/LH,0.005859486085627751
+numeric__Pulse rate(bpm),0.005587627851183459
+numeric__TSH (mIU/L),0.005494159072211549
+numeric__RBS(mg/dl),0.005421955443688757
+binary__Reg.Exercise(Y/N),0.005369257885680596
+numeric__LH(mIU/mL),0.005132495339789406
+numeric__Height(Cm),0.004617446301902787
+numeric__PRG(ng/mL),0.00439034031917936
+numeric__BP _Diastolic (mmHg),0.0027388342961911553
+numeric__BP _Systolic (mmHg),0.0012488326336476954
+cycle__Cycle(R/I)_5,0.0
