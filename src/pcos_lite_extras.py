@@ -1,3 +1,7 @@
+# ARCHIVED - Replaced by lite_extras.py
+# All functionality is preserved. Use src/lite_extras.py instead.
+# This file is kept as backup/reference only.
+# ============================================================
 """
 pcos_lite_extras.py
 ====================================================================

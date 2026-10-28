@@ -1,5 +1,21 @@
+# Python
 venv/
 __pycache__/
 *.pyc
+*.pyo
 .env
 .vscode/
+
+# Models (large binary files - uncomment below to exclude from git)
+# *.joblib
+
+# IDE
+.idea/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+.streamlit/secrets.toml

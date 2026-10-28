@@ -1,3 +1,7 @@
+# ARCHIVED - Replaced by structured src/ modules (explainability.py, cascade.py, training.py, evaluation.py)
+# All functionality is preserved. Use run_all.py to run the pipeline.
+# This file is kept as backup/reference only.
+# ============================================================
 """
 pcos_improvements.py
 ====================================================================

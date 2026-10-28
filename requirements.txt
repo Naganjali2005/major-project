@@ -1,0 +1,10 @@
+pandas>=1.5
+numpy>=1.23
+scikit-learn>=1.2
+streamlit>=1.28
+matplotlib>=3.6
+joblib>=1.2
+shap>=0.42
+openpyxl>=3.0
+xgboost>=1.7
+google-genai>=2.0.0
